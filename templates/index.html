@@ -5,10 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>CodeShield</title>
+    <div className="header">
+      <h2>CodeShield</h2>
+    </div>
+    <div className="navItem">
+      <h3>New Scan</h3>
+    </div>
+    <div className="navItem">
+      <h3>Scan History</h3>
+    </div>
   </head>
   <body>
     <main>
-      <h1>Welcome to Home Page!</h1>
+      <div className="title">
+        <h1>New Scan</h1>
+      </div>
+      <div className="scanSummary">
+        <h3>Scan Summary</h3>
+        <p>
+          Outputs:LOC, Complexity Score, Vulnerability Density, Technical Debt
+          Index(TDI) + Risk Labels. Results saved Scan History.
+        </p>
+      </div>
+      <div className="folderPath">
+        <h3>Folder Path</h3>
+        <text>Enter file path here</text>
+        <button>Browse</button>
+        <p>Supported:.py</p>
+      </div>
+      <button>Run Scan</button>
     </main>
   </body>
 </html>

@@ -5,35 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>CodeShield</title>
-    <div className="header">
-      <h2>CodeShield</h2>
-    </div>
-    <div className="navItem">
-      <h3>New Scan</h3>
-    </div>
-    <div className="navItem">
-      <h3>Scan History</h3>
-    </div>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/homepage.css') }}"
+    />
   </head>
   <body>
+    <div class="sidebar">
+      <div class="header">
+        <h2>CodeShield</h2>
+      </div>
+      <div class="navItem">New Scan</div>
+      <div class="navItem">Scan History</div>
+    </div>
     <main>
-      <div className="title">
+      <div class="title">
         <h1>New Scan</h1>
       </div>
-      <div className="scanSummary">
-        <h3>Scan Summary</h3>
-        <p>
-          Outputs:LOC, Complexity Score, Vulnerability Density, Technical Debt
-          Index(TDI) + Risk Labels. Results saved Scan History.
-        </p>
+      <div class="content">
+        <div class="scanSummary">
+          <h3>Scan Summary</h3>
+          <p>
+            Outputs:LOC, Complexity Score, Vulnerability Density, Technical Debt
+            Index(TDI) + Risk Labels. Results saved Scan History.
+          </p>
+        </div>
+        <div class="folderPath">
+          <h3>Folder Path:</h3>
+          <div class="input-row">
+            <input type="text" placeholder="Enter file path here" />
+            <button class="btn">Browse</button>
+          </div>
+          <p>Supported:.py</p>
+        </div>
       </div>
-      <div className="folderPath">
-        <h3>Folder Path</h3>
-        <text>Enter file path here</text>
-        <button>Browse</button>
-        <p>Supported:.py</p>
+      <div class="run-scan-bar">
+        <button class="btn-run">Run Scan</button>
       </div>
-      <button>Run Scan</button>
     </main>
   </body>
 </html>

@@ -13,6 +13,10 @@
   <body>
     <div class="sidebar">
       <div class="header">
+        <img
+          src="{{ url_for('static', filename='icons/ShieldLogo.png') }}"
+          alt="Shield Logo"
+        />
         <h2>CodeShield</h2>
       </div>
       <div class="navItem">New Scan</div>
@@ -26,8 +30,9 @@
         <div class="scanSummary">
           <h3>Scan Summary</h3>
           <p>
-            Outputs:LOC, Complexity Score, Vulnerability Density, Technical Debt
-            Index(TDI) + Risk Labels. Results saved in Scan History.
+            Outputs: LOC, Complexity Score, Vulnerability Density, Technical
+            Debt Index(TDI) + Risk Labels.
+            <b> Results saved in Scan History.</b>
           </p>
         </div>
         <div class="folderPath">
@@ -36,7 +41,7 @@
             <input type="text" placeholder="Enter file path here" />
             <button class="btn">Browse</button>
           </div>
-          <p>Supported:.py</p>
+          <p>Supported: .py</p>
         </div>
       </div>
       <div class="run-scan-bar">

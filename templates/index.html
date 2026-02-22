@@ -46,7 +46,7 @@
             <input
               type="file"
               id="fileInput"
-              accept=".py" 
+              accept=".py"
               style="display: none"
             />
             <button class="btn" onclick="openFile()">Browse</button>
@@ -59,19 +59,6 @@
       </div>
     </main>
 
-    <script>
-      function openFile() {
-        document.getElementById("fileInput").click();
-      }
-
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", function () {
-          const file = this.files[0];
-          if (file) {
-            document.getElementById("fileName").value = file.name;
-          }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

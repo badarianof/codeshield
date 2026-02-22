@@ -4,14 +4,16 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
-
+img {
+  height: 40px;
+}
 body {
   display: flex;
   min-height: 100vh;
   background-color: #eeeeee;
 }
 .sidebar {
-  width: 220px;
+  width: 250px;
   background-color: #0164c2;
   display: flex;
   flex-direction: column;
@@ -40,14 +42,12 @@ body {
   background-color: #0153a4;
 }
 
-/*  the below for selecting */
 .navItem.active {
   background-color: white;
   color: #0164c2;
   font-weight: bold;
 }
 
-/* ── Main content ── */
 main {
   flex: 1;
   display: flex;
@@ -73,11 +73,10 @@ main {
   flex: 1;
 }
 
-/* ── Scan Summary box ── */
 .scanSummary {
   background-color: white;
   border: 1px solid #d0d0d0;
-  border-radius: 6px;
+  border-radius: 10px;
   padding: 20px 24px;
 }
 
@@ -92,7 +91,6 @@ main {
   line-height: 1.5;
 }
 
-/* ── Folder Path ── */
 .folderPath {
   display: flex;
   flex-direction: column;
@@ -114,7 +112,7 @@ main {
   flex: 1;
   padding: 10px 12px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 0.95rem;
   background-color: white;
 }
@@ -124,13 +122,12 @@ main {
   color: #555;
 }
 
-/* ── Buttons ── */
 .btn {
   padding: 10px 24px;
   background-color: #0164c2;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 0.95rem;
 }
@@ -139,7 +136,6 @@ main {
   background-color: #0153a4;
 }
 
-/* ── Run Scan footer ── */
 .run-scan-bar {
   border-top: 1px solid #ccc;
   display: flex;
@@ -152,7 +148,7 @@ main {
   background-color: #0164c2;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 15px;
   font-size: 1rem;
   cursor: pointer;
 }

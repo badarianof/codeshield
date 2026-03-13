@@ -9,3 +9,7 @@ def home():
 @views.route("scanHistory")
 def scanHistory():
     return render_template("scanHistory.html")
+
+# @views.route("scanResults")
+# def scanResults():
+#     return render_template("scanResults.html")

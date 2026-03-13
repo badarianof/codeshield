@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>CodeShield</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/homepage.css') }}"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="header">
+        <img
+          src="{{ url_for('static', filename='icons/ShieldLogo.png') }}"
+          alt="Shield Logo"
+        />
+        <h2>CodeShield</h2>
+      </div>
+      <div class="navItem">
+        <a href="/">New Scan</a>
+      </div>
+      <div class="navItem">
+        <a href="/scanHistory">Scan History</a>
+      </div>
+    </div>
+    <main>
+      <div class="title">
+        <h1>New Scan</h1>
+      </div>
+      <div class="content">
+        <div class="scanSummary">
+          <h3>Scan Summary</h3>
+          <p>
+            Outputs: LOC, Complexity Score, Vulnerability Density, Technical
+            Debt Index(TDI) + Risk Labels.
+            <b> Results saved in Scan History.</b>
+          </p>
+        </div>
+        <div class="folderPath">
+          <h3>Folder Path:</h3>
+          <div class="input-row">
+            <input
+              type="text"
+              id="fileName"
+              placeholder="Enter file path here"
+            />
+            <input
+              type="file"
+              id="fileInput"
+              accept=".py"
+              style="display: none"
+            />
+            <button class="btn" onclick="openFile()">Browse</button>
+          </div>
+          <p>Supported: .py</p>
+        </div>
+      </div>
+      <div class="run-scan-bar">
+        <button class="btn-run">Run Scan</button>
+      </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>

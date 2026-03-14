@@ -25,9 +25,10 @@ def calculate_complexity(source_code):
                     complexity += 1
             
             results.append({
-                "function": node.name,
-                "complexity": complexity
-            })
+                 "function": node.name,
+                 "complexity": complexity,
+                "risk": get_risk_label(complexity)
+})
     
     return results
 if __name__ == "__main__":

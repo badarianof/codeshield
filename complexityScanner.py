@@ -30,14 +30,15 @@ def calculate_complexity(source_code):
             })
     
     return results
+if __name__ == "__main__":
 
-filename = "complexityScanner.py"
+    filename = "complexityScanner.py"
 
-with open(filename, "r") as f:
-    source_code = f.read()
+    with open(filename, "r") as f:
+        source_code = f.read()
 
-results = calculate_complexity(source_code)
+    results = calculate_complexity(source_code)
 
-for r in results:
-    label = get_risk_label(r['complexity'])
-    print(f"Function: {r['function']}, Complexity: {r['complexity']}, Risk: {label}")
+    for r in results:
+        label = get_risk_label(r['complexity'])
+        print(f"Function: {r['function']}, Complexity: {r['complexity']}, Risk: {label}")

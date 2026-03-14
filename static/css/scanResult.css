@@ -1,0 +1,134 @@
+.results-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #eeeeee;
+}
+
+.results-title-bar {
+  background-color: white;
+  padding: 20px 32px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  font-size: 1.5rem;
+  color: #0164c2;
+  text-decoration: none;
+  font-weight: 300;
+}
+
+.results-title-bar h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
+.results-content {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 16px;
+}
+
+.summary-card {
+  background: white;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+}
+
+.summary-card .big-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.summary-card .big-number.red {
+  color: #e53935;
+}
+
+.summary-card .card-label {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.table-container {
+  background: white;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table thead tr {
+  background-color: #8a9bb0;
+  color: white;
+}
+
+.results-table th {
+  padding: 14px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.results-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+}
+
+.results-table tr:last-child td {
+  border-bottom: none;
+}
+
+.results-table tr:hover td {
+  background-color: #f8faff;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.05em;
+}
+
+.badge-low {
+  background-color: #43a047;
+}
+.badge-moderate {
+  background-color: #fb8c00;
+}
+.badge-high {
+  background-color: #e53935;
+}
+.badge-critical {
+  background-color: #7b1fa2;
+}
+
+.no-results {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+}

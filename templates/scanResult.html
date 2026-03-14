@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeShield Scan Results</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/homepage.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/scanResult.css') }}"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="header">
+        <img
+          src="{{ url_for('static', filename='icons/ShieldLogo.png') }}"
+          alt="Shield Logo"
+        />
+        <h2>CodeShield</h2>
+      </div>
+      <div class="navItem">
+        <a href="/">New Scan</a>
+      </div>
+      <div class="navItem">
+        <a href="/scanHistory">Scan History</a>
+      </div>
+    </div>
+
+    <main class="results-main">
+      <div class="results-title-bar">
+        <a href="/" class="back-btn">&#8249;</a>
+        <h1 id="pageTitle">Scan Results</h1>
+      </div>
+
+      <div class="results-content">
+        <!-- Summary cards -->
+        <div class="summary-cards">
+          <div class="summary-card">
+            <span class="big-number" id="totalFunctions">–</span>
+            <span class="card-label">Functions Scanned</span>
+          </div>
+          <div class="summary-card">
+            <span class="big-number red" id="highRiskCount">–</span>
+            <span class="card-label">High Risk Functions</span>
+          </div>
+          <div class="summary-card">
+            <span class="big-number" id="avgComplexity">–</span>
+            <span class="card-label">Avg Complexity</span>
+          </div>
+        </div>
+
+        <!-- Results table -->
+        <div class="table-container">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Function</th>
+                <th>Complexity</th>
+                <th>Risk</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <tr>
+                <td colspan="3" class="no-results">No results yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const raw = sessionStorage.getItem("scanResults");
+
+      if (raw) {
+        const data = JSON.parse(raw);
+
+        document.getElementById("pageTitle").textContent = data.filename;
+
+        const functions = data.functions;
+
+        document.getElementById("totalFunctions").textContent =
+          functions.length;
+
+        const highRisk = functions.filter(
+          (f) => f.risk === "High" || f.risk === "Critical"
+        ).length;
+        document.getElementById("highRiskCount").textContent = highRisk;
+
+        const avg =
+          functions.reduce((sum, f) => sum + f.complexity, 0) /
+          functions.length;
+        document.getElementById("avgComplexity").textContent = avg.toFixed(1);
+
+        const tbody = document.getElementById("resultsBody");
+        tbody.innerHTML = "";
+
+        for (const fn of functions) {
+          const badgeClass =
+            {
+              Low: "badge-low",
+              Moderate: "badge-moderate",
+              High: "badge-high",
+              Critical: "badge-critical",
+            }[fn.risk] || "badge-low";
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${fn.function}</td>
+            <td>${fn.complexity}</td>
+            <td><span class="badge ${badgeClass}">${fn.risk.toUpperCase()}</span></td>
+          `;
+          tbody.appendChild(row);
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -32,26 +32,6 @@ document.querySelector(".btn-run").addEventListener("click", async function () {
 });
 
 function showResults(data) {
-  let html = "<h2>Results for: " + data.filename + "</h2>";
-  html += "<table border='1' cellpadding='8'>";
-  html += "<tr><th>Function</th><th>Complexity</th><th>Risk</th></tr>";
-
-  for (const fn of data.functions) {
-    html += "<tr>";
-    html += "<td>" + fn.function + "</td>";
-    html += "<td>" + fn.complexity + "</td>";
-    html += "<td>" + fn.risk + "</td>";
-    html += "</tr>";
-  }
-
-  html += "</table>";
-
-  let resultsDiv = document.getElementById("results");
-  if (!resultsDiv) {
-    resultsDiv = document.createElement("div");
-    resultsDiv.id = "results";
-    document.querySelector("main").appendChild(resultsDiv);
-  }
-
-  resultsDiv.innerHTML = html;
+  sessionStorage.setItem("scanResult", JSON.stringify(data));
+  window.location.href = "/scanResult";
 }

@@ -1,21 +1,20 @@
 import ast
 
-code = """
-def grade(score):
-    if score >= 90:
-        return "A"
-    elif score >= 80:
-        return "B"
-    else:
-        return "F"
-"""
+def calculate_complexity(source_code):
+    tree = ast.parse(source_code)
 
-tree = ast.parse(code)
+    complexity = 1
 
-complexity = 1
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.If, ast.For, ast.While, ast.ExceptHandler)):
+            complexity += 1
 
-for node in ast.walk(tree):
-    if isinstance(node, (ast.If, ast.For, ast.While, ast.ExceptHandler)):
-        complexity += 1
+    return complexity
 
-print("Cyclomatic Complexity:", complexity)
+filename = "complexityScanner.py"
+
+with open(filename, "r") as f:
+    source_code = f.read()
+
+result = calculate_complexity(source_code)
+print("Cyclomatic Complexity:", result)

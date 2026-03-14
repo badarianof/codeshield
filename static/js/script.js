@@ -8,3 +8,12 @@ document.getElementById("fileInput").addEventListener("change", function () {
     document.getElementById("fileName").value = file.name;
   }
 });
+
+document.querySelector(".btn-run").addEventListener("click", async function () {
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please select a .py file first.");
+    return;
+  }

@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, jsonify
+from complexityScanner import calculate_complexity
 
 views = Blueprint(__name__, "/")
 
@@ -10,6 +11,15 @@ def home():
 def scanHistory():
     return render_template("scanHistory.html")
 
-# @views.route("scanResults")
-# def scanResults():
-#     return render_template("scanResults.html")
+@views.route("/scan", methods=["POST"])
+def scan():
+    data = request.get_json()
+    source_code = data["source"]
+    filename = data["filename"]
+
+    results = calculate_complexity(source_code)
+
+    return jsonify({
+        "filename": filename,
+        "functions": results
+    })

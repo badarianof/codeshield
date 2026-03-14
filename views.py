@@ -23,3 +23,7 @@ def scan():
         "filename": filename,
         "functions": results
     })
+
+@views.route("/scanResult")
+def scanResults():
+    return render_template("scanResult.html")

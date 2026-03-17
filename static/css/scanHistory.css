@@ -1,0 +1,81 @@
+main {
+  flex: 1;
+  padding: 40px;
+  background: #efefef;
+}
+
+.page-title {
+  font-size: 40px;
+  margin-bottom: 30px;
+}
+
+#historyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.scan-card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.scan-header {
+  font-weight: bold;
+  margin-bottom: 15px;
+
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.scan-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric {
+  text-align: center;
+}
+
+.metric-number {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #777;
+}
+
+.risk {
+  padding: 8px 20px;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.low {
+  background: #4caf50;
+}
+
+.med {
+  background: #f2b233;
+}
+
+.high {
+  background: #e53935;
+}
+
+.view-btn {
+  padding: 8px 15px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #eee;
+  cursor: pointer;
+}

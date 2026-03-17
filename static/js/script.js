@@ -111,5 +111,11 @@ if (container) {
 `;
 
     container.appendChild(card);
+
+    card.querySelector(".view-btn").addEventListener("click", function () {
+      sessionStorage.setItem("scanResults", JSON.stringify(scan.results));
+
+      window.location.href = "/scanResult";
+    });
   });
 }

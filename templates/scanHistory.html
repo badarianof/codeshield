@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Scan History</title>
+  <head>
+    <title>Scan History</title>
 
-  <link rel="stylesheet"
-  href="{{ url_for('static', filename='css/homepage.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/homepage.css') }}"
+    />
 
-  <link rel="stylesheet"
-  href="{{ url_for('static', filename='css/scanHistory.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/scanHistory.css') }}"
+    />
+  </head>
 
-</head>
+  <body>
+    <div class="sidebar">
+      <div class="header">
+        <img
+          src="{{ url_for('static', filename='icons/ShieldLogo.png') }}"
+          alt="Shield Logo"
+        />
+        <h2>CodeShield</h2>
+      </div>
 
-<body>
+      <div class="navItem">
+        <a href="/">New Scan</a>
+      </div>
 
-<div class="sidebar">
-  <div class="header">
-    <h2>CodeShield</h2>
-  </div>
+      <div class="navItem active">
+        <a href="/scanHistory">Scan History</a>
+      </div>
+    </div>
 
-  <div class="navItem">
-    <a href="/">New Scan</a>
-  </div>
+    <main>
+      <h1 class="page-title">Scan History</h1>
 
-  <div class="navItem active">
-    <a href="/scanHistory">Scan History</a>
-  </div>
-</div>
+      <div id="historyContainer"></div>
+    </main>
 
-<main>
-
-<h1 class="page-title">Scan History</h1>
-
-<div id="historyContainer"></div>
-
-</main>
-
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
-</body>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
 </html>

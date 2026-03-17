@@ -27,3 +27,7 @@ def scan():
 @views.route("/scanResult")
 def scanResults():
     return render_template("scanResult.html")
+
+@views.route("/scanHistory")
+def scan_history():
+    return render_template("scanHistory.html")

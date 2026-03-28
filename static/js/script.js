@@ -1,11 +1,10 @@
+const fileInput = document.getElementById("fileInput");
+
 function openFile() {
-  const fileInput = document.getElementById("fileInput");
   if (fileInput) {
     fileInput.click();
   }
 }
-
-const fileInput = document.getElementById("fileInput");
 
 if (fileInput) {
   fileInput.addEventListener("change", function () {
@@ -44,7 +43,7 @@ if (fileInput) {
 function showResults(data) {
   let history = JSON.parse(sessionStorage.getItem("scanHistory")) || [];
 
-  const avgTDI =
+  const avgComplexity =
     data.functions.reduce((sum, f) => sum + f.complexity, 0) /
     data.functions.length;
 
@@ -52,7 +51,7 @@ function showResults(data) {
     date: new Date().toLocaleString(),
     filename: data.filename,
     filesScanned: 1,
-    avgTDI: avgTDI.toFixed(1),
+    avgComplexity: avgComplexity.toFixed(1),
     results: data,
   };
 
@@ -72,11 +71,11 @@ if (container) {
   const history = JSON.parse(sessionStorage.getItem("scanHistory")) || [];
 
   history.forEach((scan) => {
-    const tdi = scan.avgTDI || scan.avgComplexity || 0;
+    const tdi = scan.avgComplexity || 0;
 
     let risk = "LOW";
 
-    if (tdi > 40) risk = "HIGH";
+    if (tdi > 50) risk = "HIGH";
     else if (tdi > 20) risk = "MED";
 
     const card = document.createElement("div");

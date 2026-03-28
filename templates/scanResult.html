@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -37,7 +37,6 @@
       </div>
 
       <div class="results-content">
-        <!-- Summary cards -->
         <div class="summary-cards">
           <div class="summary-card">
             <span class="big-number" id="totalFunctions">–</span>
@@ -53,7 +52,6 @@
           </div>
         </div>
 
-        <!-- Results table -->
         <div class="table-container">
           <table class="results-table">
             <thead>
@@ -81,31 +79,30 @@
 
         document.getElementById("pageTitle").textContent = data.filename;
 
-        const functions = data.functions;
-
         document.getElementById("totalFunctions").textContent =
-          functions.length;
+          data.functions.length;
 
-        const highRisk = functions.filter(
-          (f) => f.risk === "High" || f.risk === "Critical"
+        const highRisk = data.functions.filter(
+          (f) => f.risk === "High" || f.risk === "Critical",
         ).length;
         document.getElementById("highRiskCount").textContent = highRisk;
 
         const avg =
-          functions.reduce((sum, f) => sum + f.complexity, 0) /
-          functions.length;
+          data.functions.length > 0
+            ? data.functions.reduce((sum, f) => sum + f.complexity, 0) /
+              data.functions.length
+            : 0;
         document.getElementById("avgComplexity").textContent = avg.toFixed(1);
 
         const tbody = document.getElementById("resultsBody");
         tbody.innerHTML = "";
 
-        for (const fn of functions) {
+        for (const fn of data.functions) {
           const badgeClass =
             {
               Low: "badge-low",
-              Moderate: "badge-moderate",
+              Medium: "badge-medium",
               High: "badge-high",
-              Critical: "badge-critical",
             }[fn.risk] || "badge-low";
 
           const row = document.createElement("tr");

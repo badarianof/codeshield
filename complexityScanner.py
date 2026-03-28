@@ -1,15 +1,14 @@
 import ast
 
 def get_risk_label(complexity):
-    if complexity <= 5:
+    if complexity <= 20:
         return "Low"
-    elif complexity <= 10:
-        return "Moderate"
-    elif complexity <= 20:
-        return "High"
+    elif complexity < 50:
+        return "Medium"
     else:
-        return "Critical"
-    
+        return "High"
+
+
 def calculate_complexity(source_code):
     tree = ast.parse(source_code)
     
@@ -25,21 +24,9 @@ def calculate_complexity(source_code):
                     complexity += 1
             
             results.append({
-                 "function": node.name,
-                 "complexity": complexity,
+                "function": node.name,
+                "complexity": complexity,
                 "risk": get_risk_label(complexity)
-})
-    
+            })
+            
     return results
-if __name__ == "__main__":
-
-    filename = "complexityScanner.py"
-
-    with open(filename, "r") as f:
-        source_code = f.read()
-
-    results = calculate_complexity(source_code)
-
-    for r in results:
-        label = get_risk_label(r['complexity'])
-        print(f"Function: {r['function']}, Complexity: {r['complexity']}, Risk: {label}")

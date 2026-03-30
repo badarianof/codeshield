@@ -47,7 +47,7 @@
             <span class="card-label">Red Flags</span>
           </div>
           <div class="summary-card">
-            <span class="big-number" id="avgComplexity">–</span>
+            <span class="big-number" id="avgTDI">–</span>
             <span class="card-label">Avg TDI</span>
           </div>
         </div>
@@ -85,8 +85,7 @@
         document.getElementById("redFlagCount").textContent =
           data.red_flag_count;
 
-        document.getElementById("avgComplexity").textContent =
-          data.tdi.toFixed(2);
+        document.getElementById("avgTDI").textContent = data.tdi.toFixed(2);
 
         const tbody = document.getElementById("resultsBody");
         tbody.innerHTML = "";

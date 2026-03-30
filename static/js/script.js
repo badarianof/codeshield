@@ -43,15 +43,13 @@ if (fileInput) {
 function showResults(data) {
   let history = JSON.parse(sessionStorage.getItem("scanHistory")) || [];
 
-  const avgComplexity =
-    data.functions.reduce((sum, f) => sum + f.complexity, 0) /
-    data.functions.length;
-
   const scan = {
     date: new Date().toLocaleString(),
     filename: data.filename,
     filesScanned: 1,
-    avgComplexity: avgComplexity.toFixed(1),
+    tdi: data.tdi,
+    risk: data.risk,
+    redFlagCount: data.red_flag_count,
     results: data,
   };
 
@@ -71,12 +69,8 @@ if (container) {
   const history = JSON.parse(sessionStorage.getItem("scanHistory")) || [];
 
   history.forEach((scan) => {
-    const tdi = scan.avgComplexity || 0;
-
-    let risk = "LOW";
-
-    if (tdi > 50) risk = "HIGH";
-    else if (tdi > 20) risk = "MED";
+    const tdi = scan.tdi || 0;
+    const risk = (scan.risk || "Low").toUpperCase();
 
     const card = document.createElement("div");
     card.className = "scan-card";
@@ -94,7 +88,7 @@ if (container) {
     </div>
 
     <div class="metric">
-      <div class="metric-number">${tdi}</div>
+      <div class="metric-number">${Number(tdi).toFixed(1)}</div>
       <div class="metric-label">Avg TDI</div>
     </div>
 

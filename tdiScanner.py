@@ -49,13 +49,13 @@ def detect_ast_red_flags(tree):
     red_flags = []
 
     for node in ast.walk(tree):
-        # Hardcoded credentials/secretsdf
+        # Hardcoded credentials/secrets
         if isinstance(node, ast.Assign):
             for target in node.targets:
                 if isinstance(target, ast.Name):
                     name = target.id.lower()
                     secret_words = ["password", "secret", "token", "api_key", "apikey"]
-                    
+
                     for word in secret_words:
                         if word in name:
                             if isinstance(node.value, ast.Constant):
@@ -69,7 +69,7 @@ def detect_ast_red_flags(tree):
                 if node.func.value.id == "hashlib" and node.func.attr in ["md5", "sha1"]:
                     red_flags.append(f"Weak cryptographic algorithm used: {node.func.attr}")
 
-        # SQL injection pattern: string concatenation inside execute(...)
+        # SQL injection pattern
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
             if node.func.attr == "execute":
                 if node.args:
@@ -89,6 +89,15 @@ def classify_tdi(tdi):
         return "Low"
 
 
+def classify_function_risk(complexity):
+    if complexity >= 10:
+        return "High"
+    elif complexity >= 5:
+        return "Medium"
+    else:
+        return "Low"
+
+
 def scan_code(source_code):
     tree = ast.parse(source_code)
 
@@ -99,7 +108,8 @@ def scan_code(source_code):
             complexity = calculate_function_complexity(node)
             function_results.append({
                 "function": node.name,
-                "complexity": complexity
+                "complexity": complexity,
+                "risk": classify_function_risk(complexity)
             })
 
     loc = count_loc(source_code)
@@ -116,12 +126,10 @@ def scan_code(source_code):
 
     if function_results:
         total_complexity = 0
-        
         for fn in function_results:
             total_complexity += fn["complexity"]
-            
-            avg_complexity = total_complexity / len(function_results)
-            
+
+        avg_complexity = total_complexity / len(function_results)
     else:
         avg_complexity = 0
 

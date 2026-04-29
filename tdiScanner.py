@@ -14,6 +14,13 @@ def count_loc(source_code):
     return count
 
 
+def count_function_loc(function_node):
+    if hasattr(function_node, "end_lineno") and function_node.end_lineno is not None:
+        return function_node.end_lineno - function_node.lineno + 1
+
+    return 0
+
+
 def count_commented_out_blocks(source_code):
     lines = source_code.splitlines()
     count = 0
@@ -44,11 +51,21 @@ def calculate_function_complexity(function_node):
 
     return complexity
 
+def calculate_vulnerability_density(red_flag_count, loc):
+    if loc > 0:
+        return (red_flag_count / loc) * 1000
+    else:
+        return 0
+    
 
-def detect_ast_red_flags(tree):
+def calculate_tdi(complexity_score, vulnerability_density):
+    return (complexity_score * 0.5) + (vulnerability_density * 0.5)
+
+
+def detect_ast_red_flags_in_node(root_node):
     red_flags = []
 
-    for node in ast.walk(tree):
+    for node in ast.walk(root_node):
         # Hardcoded credentials/secrets
         if isinstance(node, ast.Assign):
             for target in node.targets:
@@ -80,19 +97,18 @@ def detect_ast_red_flags(tree):
     return red_flags
 
 
+def detect_ast_red_flags(tree):
+    return detect_ast_red_flags_in_node(tree)
+
+
+def detect_function_red_flags(function_node):
+    return detect_ast_red_flags_in_node(function_node)
+
+
 def classify_tdi(tdi):
     if tdi >= 50:
         return "High"
     elif tdi >= 20:
-        return "Medium"
-    else:
-        return "Low"
-
-
-def classify_function_risk(complexity):
-    if complexity >= 10:
-        return "High"
-    elif complexity >= 5:
         return "Medium"
     else:
         return "Low"
@@ -106,10 +122,31 @@ def scan_code(source_code):
     for node in ast.walk(tree):
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             complexity = calculate_function_complexity(node)
+
+            function_loc = count_function_loc(node)
+
+            function_red_flags = detect_function_red_flags(node)
+            function_red_flags_count = len(function_red_flags)
+
+            function_vulnerability_density = calculate_vulnerability_density(
+                function_red_flags_count,
+                function_loc
+            )
+
+            function_tdi = calculate_tdi(
+                complexity,
+                function_vulnerability_density
+            )
+
             function_results.append({
                 "function": node.name,
+                "loc": function_loc,
                 "complexity": complexity,
-                "risk": classify_function_risk(complexity)
+                "red_flag_count": function_red_flags_count,
+                "red_flags": function_red_flags,
+                "vulnerability_density": round(function_vulnerability_density, 2),
+                "tdi": round(function_tdi, 2),
+                "risk": classify_tdi(function_tdi)
             })
 
     loc = count_loc(source_code)
@@ -126,6 +163,7 @@ def scan_code(source_code):
 
     if function_results:
         total_complexity = 0
+
         for fn in function_results:
             total_complexity += fn["complexity"]
 
@@ -133,12 +171,9 @@ def scan_code(source_code):
     else:
         avg_complexity = 0
 
-    if loc > 0:
-        vulnerability_density = (red_flag_count / loc) * 1000
-    else:
-        vulnerability_density = 0
+    vulnerability_density = calculate_vulnerability_density(red_flag_count, loc)
 
-    tdi = (avg_complexity * 0.5) + (vulnerability_density * 0.5)
+    tdi = calculate_tdi(avg_complexity, vulnerability_density)
 
     return {
         "functions": function_results,

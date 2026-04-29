@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from complexityScanner import calculate_complexity
+from tdiScanner import calculate_complexity
 
 views = Blueprint(__name__, "/")
 

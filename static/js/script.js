@@ -1,11 +1,10 @@
+const fileInput = document.getElementById("fileInput");
+
 function openFile() {
-  const fileInput = document.getElementById("fileInput");
   if (fileInput) {
     fileInput.click();
   }
 }
-
-const fileInput = document.getElementById("fileInput");
 
 if (fileInput) {
   fileInput.addEventListener("change", function () {
@@ -44,15 +43,13 @@ if (fileInput) {
 function showResults(data) {
   let history = JSON.parse(sessionStorage.getItem("scanHistory")) || [];
 
-  const avgTDI =
-    data.functions.reduce((sum, f) => sum + f.complexity, 0) /
-    data.functions.length;
-
   const scan = {
     date: new Date().toLocaleString(),
     filename: data.filename,
     filesScanned: 1,
-    avgTDI: avgTDI.toFixed(1),
+    tdi: data.tdi,
+    risk: data.risk,
+    redFlagCount: data.red_flag_count,
     results: data,
   };
 
@@ -72,12 +69,8 @@ if (container) {
   const history = JSON.parse(sessionStorage.getItem("scanHistory")) || [];
 
   history.forEach((scan) => {
-    const tdi = scan.avgTDI || scan.avgComplexity || 0;
-
-    let risk = "LOW";
-
-    if (tdi > 40) risk = "HIGH";
-    else if (tdi > 20) risk = "MED";
+    const tdi = scan.tdi || 0;
+    const risk = (scan.risk || "Low").toUpperCase();
 
     const card = document.createElement("div");
     card.className = "scan-card";
@@ -95,7 +88,7 @@ if (container) {
     </div>
 
     <div class="metric">
-      <div class="metric-number">${tdi}</div>
+      <div class="metric-number">${Number(tdi).toFixed(1)}</div>
       <div class="metric-label">Avg TDI</div>
     </div>
 

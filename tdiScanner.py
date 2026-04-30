@@ -141,7 +141,7 @@ def scan_code(source_code):
             function_results.append({
                 "function": node.name,
                 "loc": function_loc,
-                "complexity": complexity,
+                "complexity": function_complexity,
                 "red_flag_count": function_red_flags_count,
                 "red_flags": function_red_flags,
                 "vulnerability_density": round(function_vulnerability_density, 2),

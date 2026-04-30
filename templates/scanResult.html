@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -37,29 +37,27 @@
       </div>
 
       <div class="results-content">
-        <!-- Summary cards -->
         <div class="summary-cards">
           <div class="summary-card">
             <span class="big-number" id="totalFunctions">–</span>
             <span class="card-label">Functions Scanned</span>
           </div>
           <div class="summary-card">
-            <span class="big-number red" id="highRiskCount">–</span>
-            <span class="card-label">High Risk Functions</span>
+            <span class="big-number red" id="redFlagCount">–</span>
+            <span class="card-label">Red Flags</span>
           </div>
           <div class="summary-card">
-            <span class="big-number" id="avgComplexity">–</span>
-            <span class="card-label">Avg Complexity</span>
+            <span class="big-number" id="avgTDI">–</span>
+            <span class="card-label">Avg TDI</span>
           </div>
         </div>
 
-        <!-- Results table -->
         <div class="table-container">
           <table class="results-table">
             <thead>
               <tr>
                 <th>Function</th>
-                <th>Complexity</th>
+                <th>TDI</th>
                 <th>Risk</th>
               </tr>
             </thead>
@@ -81,31 +79,23 @@
 
         document.getElementById("pageTitle").textContent = data.filename;
 
-        const functions = data.functions;
-
         document.getElementById("totalFunctions").textContent =
-          functions.length;
+          data.functions.length;
 
-        const highRisk = functions.filter(
-          (f) => f.risk === "High" || f.risk === "Critical"
-        ).length;
-        document.getElementById("highRiskCount").textContent = highRisk;
+        document.getElementById("redFlagCount").textContent =
+          data.red_flag_count;
 
-        const avg =
-          functions.reduce((sum, f) => sum + f.complexity, 0) /
-          functions.length;
-        document.getElementById("avgComplexity").textContent = avg.toFixed(1);
+        document.getElementById("avgTDI").textContent = data.tdi.toFixed(1);
 
         const tbody = document.getElementById("resultsBody");
         tbody.innerHTML = "";
 
-        for (const fn of functions) {
+        for (const fn of data.functions) {
           const badgeClass =
             {
               Low: "badge-low",
-              Moderate: "badge-moderate",
+              Medium: "badge-medium",
               High: "badge-high",
-              Critical: "badge-critical",
             }[fn.risk] || "badge-low";
 
           const row = document.createElement("tr");

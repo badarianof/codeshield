@@ -42,7 +42,7 @@ def count_commented_out_blocks(source_code):
     return count
 
 
-def calculate_function_complexity(function_node):
+def calculate_complexity(function_node):
     complexity = 1
 
     for inner_node in ast.walk(function_node):
@@ -121,7 +121,7 @@ def scan_code(source_code):
 
     for node in ast.walk(tree):
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            complexity = calculate_function_complexity(node)
+            function_complexity = calculate_complexity(node)
 
             function_loc = count_function_loc(node)
 
@@ -134,14 +134,14 @@ def scan_code(source_code):
             )
 
             function_tdi = calculate_tdi(
-                complexity,
+                function_complexity,
                 function_vulnerability_density
             )
 
             function_results.append({
                 "function": node.name,
                 "loc": function_loc,
-                "complexity": complexity,
+                "complexity": function_complexity,
                 "red_flag_count": function_red_flags_count,
                 "red_flags": function_red_flags,
                 "vulnerability_density": round(function_vulnerability_density, 2),
@@ -150,6 +150,8 @@ def scan_code(source_code):
             })
 
     loc = count_loc(source_code)
+
+    file_complexity = calculate_complexity(tree)
 
     ast_red_flags = detect_ast_red_flags(tree)
     comment_block_flags = count_commented_out_blocks(source_code)
@@ -161,19 +163,9 @@ def scan_code(source_code):
 
     red_flag_count = len(red_flags)
 
-    if function_results:
-        total_complexity = 0
-
-        for fn in function_results:
-            total_complexity += fn["complexity"]
-
-        avg_complexity = total_complexity / len(function_results)
-    else:
-        avg_complexity = 0
-
     vulnerability_density = calculate_vulnerability_density(red_flag_count, loc)
 
-    tdi = calculate_tdi(avg_complexity, vulnerability_density)
+    tdi = calculate_tdi(file_complexity, vulnerability_density)
 
     return {
         "functions": function_results,
@@ -181,7 +173,7 @@ def scan_code(source_code):
         "red_flag_count": red_flag_count,
         "red_flags": red_flags,
         "vulnerability_density": round(vulnerability_density, 2),
-        "avg_complexity": round(avg_complexity, 2),
+        "file_complexity": file_complexity,
         "tdi": round(tdi, 2),
         "risk": classify_tdi(tdi)
     }

@@ -117,14 +117,11 @@
 .badge-low {
   background-color: #43a047;
 }
-.badge-moderate {
+.badge-medium {
   background-color: #fb8c00;
 }
 .badge-high {
   background-color: #e53935;
-}
-.badge-critical {
-  background-color: #7b1fa2;
 }
 
 .no-results {

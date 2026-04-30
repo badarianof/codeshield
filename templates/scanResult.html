@@ -50,6 +50,10 @@
             <span class="big-number" id="avgTDI">–</span>
             <span class="card-label">Avg TDI</span>
           </div>
+          <div class="summary-card">
+            <span class="big-number" id="linesOfCode">–</span>
+            <span class="card-label">Lines of Code</span>
+          </div>
         </div>
 
         <div class="table-container">
@@ -86,6 +90,8 @@
           data.red_flag_count;
 
         document.getElementById("avgTDI").textContent = data.tdi.toFixed(1);
+
+        document.getElementById("linesOfCode").textContent = data.loc;
 
         const tbody = document.getElementById("resultsBody");
         tbody.innerHTML = "";

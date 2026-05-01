@@ -129,3 +129,33 @@
   text-align: center;
   color: #888;
 }
+
+.red-flags-container {
+  background: white;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+
+.red-flags-container h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.red-flags-description {
+  font-size: 0.95rem;
+  color: #555555;
+  margin-bottom: 12px;
+}
+
+.red-flags-list {
+  padding-left: 20px;
+}
+
+.red-flags-list {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+}

@@ -72,6 +72,18 @@
             </tbody>
           </table>
         </div>
+
+        <div class="red-flags-container">
+          <h2>Security Red Flags</h2>
+          <p class="red-flags-description">
+            The following warnings were detected in the scanned file. These
+            should be reviewed manually before deciding what to change.
+          </p>
+
+          <ul id="redFlagList" class="red-flags-list">
+            <li>No red flags found.</li>
+          </ul>
+        </div>
       </div>
     </main>
 
@@ -88,6 +100,21 @@
 
         document.getElementById("redFlagCount").textContent =
           data.red_flag_count;
+
+        const redFlagsList = document.getElementById("redFlagList");
+        redFlagsList.innerHTML = "";
+
+        if (data.red_flags && data.red_flags.length > 0) {
+          for (const flag of data.red_flags) {
+            const item = document.createElement("li");
+            item.textContent = flag;
+            redFlagsList.appendChild(item);
+          }
+        } else {
+          const item = document.createElement("li");
+          item.textContent = "No red flags found.";
+          redFlagsList.appendChild(item);
+        }
 
         document.getElementById("avgTDI").textContent = data.tdi.toFixed(1);
 

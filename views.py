@@ -13,7 +13,14 @@ def scan():
     source_code = data["source"]
     filename = data["filename"]
 
-    scan_data = scan_code(source_code)
+    try:
+        scan_data = scan_code(source_code)
+    except SyntaxError as e:
+        return jsonify({
+            "filename": filename,
+            "error": "syntax_error",
+            "message": f"Syntax error on line {e.lineno}: {e.msg}"
+        })
 
     return jsonify({
         "filename": filename,

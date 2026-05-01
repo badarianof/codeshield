@@ -66,7 +66,6 @@ def detect_ast_red_flags_in_node(root_node):
     red_flags = []
 
     for node in ast.walk(root_node):
-        # Hardcoded credentials/secrets
         if isinstance(node, ast.Assign):
             for target in node.targets:
                 if isinstance(target, ast.Name):
@@ -80,13 +79,11 @@ def detect_ast_red_flags_in_node(root_node):
                                     red_flags.append(f"Possible hardcoded secret: {target.id}")
                             break
 
-        # Weak crypto
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
             if isinstance(node.func.value, ast.Name):
                 if node.func.value.id == "hashlib" and node.func.attr in ["md5", "sha1"]:
                     red_flags.append(f"Weak cryptographic algorithm used: {node.func.attr}")
 
-        # SQL injection pattern
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
             if node.func.attr == "execute":
                 if node.args:

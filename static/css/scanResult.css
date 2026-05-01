@@ -159,3 +159,46 @@
   font-size: 0.95rem;
   color: #1a1a1a;
 }
+
+.syntax-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background-color: #fff3f3;
+  border-left: 4px solid #e53935;
+  border-bottom: 1px solid #fcc;
+  padding: 16px 32px;
+  color: #1a1a1a;
+}
+
+.syntax-error-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.syntax-error-banner strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #c62828;
+}
+
+.syntax-error-banner p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+}
+
+.col-function  { width: 45%; }
+.col-loc       { width: 12%; text-align: center; }
+.col-redflags  { width: 16%; text-align: center; }
+.col-tdi       { width: 12%; text-align: center; }
+.col-risk      { width: 15%; text-align: left; }
+
+.results-table th.col-loc,
+.results-table th.col-redflags,
+.results-table th.col-tdi {
+  text-align: center;
+}

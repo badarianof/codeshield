@@ -36,6 +36,15 @@
         <h1 id="pageTitle">Scan Results</h1>
       </div>
 
+      <!-- NEW: syntax error banner, hidden unless triggered -->
+      <div id="syntaxErrorBanner" class="syntax-error-banner" style="display: none;">
+        <span class="syntax-error-icon">⚠️</span>
+        <div>
+          <strong>Invalid Python Syntax</strong>
+          <p id="syntaxErrorMessage">This file contains a syntax error and could not be scanned.</p>
+        </div>
+      </div>
+
       <div class="results-content">
         <div class="summary-cards">
           <div class="summary-card">
@@ -60,14 +69,17 @@
           <table class="results-table">
             <thead>
               <tr>
-                <th>Function</th>
-                <th>TDI</th>
-                <th>Risk</th>
+                <!-- NEW: added LoC and Red Flags columns -->
+                <th class="col-function">Function</th>
+                <th class="col-loc">LoC</th>
+                <th class="col-redflags">Red Flags</th>
+                <th class="col-tdi">TDI</th>
+                <th class="col-risk">Risk</th>
               </tr>
             </thead>
             <tbody id="resultsBody">
               <tr>
-                <td colspan="3" class="no-results">No results yet.</td>
+                <td colspan="5" class="no-results">No results yet.</td>
               </tr>
             </tbody>
           </table>
@@ -88,10 +100,22 @@
     </main>
 
     <script>
-      const raw = sessionStorage.getItem("scanResults");
+      // Wrapped in IIFE so `return` is valid
+      (function () {
+        const raw = sessionStorage.getItem("scanResults");
 
-      if (raw) {
+        if (!raw) return;
+
         const data = JSON.parse(raw);
+
+        // NEW: handle syntax error from backend
+        if (data.error === "syntax_error") {
+          document.getElementById("syntaxErrorBanner").style.display = "flex";
+          document.getElementById("syntaxErrorMessage").textContent =
+            data.message || "This file contains a syntax error and could not be scanned.";
+          document.getElementById("pageTitle").textContent = data.filename || "Scan Results";
+          return;
+        }
 
         document.getElementById("pageTitle").textContent = data.filename;
 
@@ -132,14 +156,17 @@
             }[fn.risk] || "badge-low";
 
           const row = document.createElement("tr");
+          // NEW: added fn.loc and fn.red_flag_count cells
           row.innerHTML = `
-            <td>${fn.function}</td>
-            <td>${fn.complexity}</td>
-            <td><span class="badge ${badgeClass}">${fn.risk.toUpperCase()}</span></td>
+            <td class="col-function">${fn.function}</td>
+            <td class="col-loc">${fn.loc}</td>
+            <td class="col-redflags">${fn.red_flag_count}</td>
+            <td class="col-tdi">${fn.tdi}</td>
+            <td class="col-risk"><span class="badge ${badgeClass}">${fn.risk.toUpperCase()}</span></td>
           `;
           tbody.appendChild(row);
         }
-      }
+      })();
     </script>
   </body>
 </html>

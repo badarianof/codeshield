@@ -41,6 +41,14 @@ if (fileInput) {
 }
 
 function showResults(data) {
+  // Always store and redirect — scanResult.html handles the error display
+  sessionStorage.setItem("scanResults", JSON.stringify(data));
+
+  if (data.error === "syntax_error") {
+    window.location.href = "/scanResult";
+    return;
+  }
+
   let history = JSON.parse(sessionStorage.getItem("scanHistory")) || [];
 
   const scan = {
@@ -57,8 +65,6 @@ function showResults(data) {
 
   history.unshift(scan);
   sessionStorage.setItem("scanHistory", JSON.stringify(history));
-
-  sessionStorage.setItem("scanResults", JSON.stringify(data));
 
   window.location.href = "/scanResult";
 }

@@ -151,7 +151,10 @@ def scan_code(source_code):
 
     loc = count_loc(source_code)
 
-    file_complexity = calculate_complexity(tree)
+    if loc == 0:
+        file_complexity = 0
+    else:
+        file_complexity = calculate_complexity(tree)
 
     ast_red_flags = detect_ast_red_flags(tree)
     comment_block_flags = count_commented_out_blocks(source_code)

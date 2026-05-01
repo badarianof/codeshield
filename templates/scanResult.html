@@ -36,7 +36,6 @@
         <h1 id="pageTitle">Scan Results</h1>
       </div>
 
-      <!-- NEW: syntax error banner, hidden unless triggered -->
       <div id="syntaxErrorBanner" class="syntax-error-banner" style="display: none;">
         <span class="syntax-error-icon">⚠️</span>
         <div>
@@ -69,7 +68,6 @@
           <table class="results-table">
             <thead>
               <tr>
-                <!-- NEW: added LoC and Red Flags columns -->
                 <th class="col-function">Function</th>
                 <th class="col-loc">LoC</th>
                 <th class="col-redflags">Red Flags</th>
@@ -100,7 +98,6 @@
     </main>
 
     <script>
-      // Wrapped in IIFE so `return` is valid
       (function () {
         const raw = sessionStorage.getItem("scanResults");
 
@@ -108,7 +105,6 @@
 
         const data = JSON.parse(raw);
 
-        // NEW: handle syntax error from backend
         if (data.error === "syntax_error") {
           document.getElementById("syntaxErrorBanner").style.display = "flex";
           document.getElementById("syntaxErrorMessage").textContent =
@@ -156,7 +152,6 @@
             }[fn.risk] || "badge-low";
 
           const row = document.createElement("tr");
-          // NEW: added fn.loc and fn.red_flag_count cells
           row.innerHTML = `
             <td class="col-function">${fn.function}</td>
             <td class="col-loc">${fn.loc}</td>

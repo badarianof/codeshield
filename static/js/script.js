@@ -41,7 +41,6 @@ if (fileInput) {
 }
 
 function showResults(data) {
-  // Always store and redirect — scanResult.html handles the error display
   sessionStorage.setItem("scanResults", JSON.stringify(data));
 
   if (data.error === "syntax_error") {

@@ -92,6 +92,11 @@ if (container) {
       <div class="metric-label">Avg TDI</div>
     </div>
 
+    <div class="metric">
+      <div class="metric-number">${scan.redFlagCount || 0}</div>
+      <div class="metric-label">Red Flags</div>
+    </div>
+
     <div class="risk ${risk.toLowerCase()}">
       ${risk}
     </div>

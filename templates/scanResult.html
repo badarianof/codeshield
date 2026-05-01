@@ -36,11 +36,17 @@
         <h1 id="pageTitle">Scan Results</h1>
       </div>
 
-      <div id="syntaxErrorBanner" class="syntax-error-banner" style="display: none;">
+      <div
+        id="syntaxErrorBanner"
+        class="syntax-error-banner"
+        style="display: none"
+      >
         <span class="syntax-error-icon">⚠️</span>
         <div>
           <strong>Invalid Python Syntax</strong>
-          <p id="syntaxErrorMessage">This file contains a syntax error and could not be scanned.</p>
+          <p id="syntaxErrorMessage">
+            This file contains a syntax error and could not be scanned.
+          </p>
         </div>
       </div>
 
@@ -108,8 +114,10 @@
         if (data.error === "syntax_error") {
           document.getElementById("syntaxErrorBanner").style.display = "flex";
           document.getElementById("syntaxErrorMessage").textContent =
-            data.message || "This file contains a syntax error and could not be scanned.";
-          document.getElementById("pageTitle").textContent = data.filename || "Scan Results";
+            data.message ||
+            "This file contains a syntax error and could not be scanned.";
+          document.getElementById("pageTitle").textContent =
+            data.filename || "Scan Results";
           return;
         }
 
@@ -156,7 +164,7 @@
             <td class="col-function">${fn.function}</td>
             <td class="col-loc">${fn.loc}</td>
             <td class="col-redflags">${fn.red_flag_count}</td>
-            <td class="col-tdi">${fn.tdi}</td>
+            <td class="col-tdi">${fn.tdi.toFixed(1)}</td>
             <td class="col-risk"><span class="badge ${badgeClass}">${fn.risk.toUpperCase()}</span></td>
           `;
           tbody.appendChild(row);

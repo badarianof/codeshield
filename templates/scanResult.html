@@ -4,22 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodeShield Scan Results</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/homepage.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/scanResult.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/scanResult.css') }}" />
   </head>
   <body>
     <div class="sidebar">
       <div class="header">
-        <img
-          src="{{ url_for('static', filename='icons/ShieldLogo.png') }}"
-          alt="Shield Logo"
-        />
+        <img src="{{ url_for('static', filename='icons/ShieldLogo.png') }}" alt="Shield Logo" />
         <h2>CodeShield</h2>
       </div>
       <div class="navItem">
@@ -43,8 +34,19 @@
           <p id="syntaxErrorMessage">This file contains a syntax error and could not be scanned.</p>
         </div>
       </div>
+      <div id="criticalRiskBanner" class="critical-risk-banner" style="display: none;">
+        <span class="critical-risk-icon">🚨</span>
+        <div>
+          <strong>Extremely Complex / High Risk — Immediate Refactoring Recommended</strong>
+          <p id="criticalRiskMessage">
+            One or more functions exceed the high-risk TDI threshold of 50.
+            These modules should be prioritised for refactoring.
+          </p>
+        </div>
+      </div>
 
       <div class="results-content">
+
         <div class="summary-cards">
           <div class="summary-card">
             <span class="big-number" id="totalFunctions">–</span>
@@ -55,13 +57,27 @@
             <span class="card-label">Red Flags</span>
           </div>
           <div class="summary-card">
+            <span class="big-number" id="avgComplexity">–</span>
+            <span class="card-label">Avg Complexity</span>
+          </div>
+          <div class="summary-card">
+            <span class="big-number" id="vulnDensity">–</span>
+            <span class="card-label">Vuln Density (/1k LoC)</span>
+          </div>
+          <div class="summary-card">
             <span class="big-number" id="avgTDI">–</span>
-            <span class="card-label">Avg TDI</span>
+            <span class="card-label">File TDI</span>
           </div>
           <div class="summary-card">
             <span class="big-number" id="linesOfCode">–</span>
             <span class="card-label">Lines of Code</span>
           </div>
+        </div>
+
+        <div class="tdi-formula-box">
+          <span class="formula-label">TDI formula (Section 3):</span>
+          <code>TDI = (Complexity × 0.5) + (Vulnerability Density × 0.5)</code>
+          <span class="threshold-note">High-risk threshold: TDI ≥ 50</span>
         </div>
 
         <div class="table-container">
@@ -70,6 +86,8 @@
               <tr>
                 <th class="col-function">Function</th>
                 <th class="col-loc">LoC</th>
+                <th class="col-cc" title="Cyclomatic Complexity">CC</th>
+                <th class="col-vd" title="Vulnerability Density per 1,000 LoC">Vuln Density</th>
                 <th class="col-redflags">Red Flags</th>
                 <th class="col-tdi">TDI</th>
                 <th class="col-risk">Risk</th>
@@ -77,7 +95,7 @@
             </thead>
             <tbody id="resultsBody">
               <tr>
-                <td colspan="5" class="no-results">No results yet.</td>
+                <td colspan="7" class="no-results">No results yet.</td>
               </tr>
             </tbody>
           </table>
@@ -86,21 +104,22 @@
         <div class="red-flags-container">
           <h2>Security Red Flags</h2>
           <p class="red-flags-description">
-            The following warnings were detected in the scanned file. These
-            should be reviewed manually before deciding what to change.
+            The following security warnings were detected in the scanned file.
+            They should be reviewed manually before deciding what action to take.
+            Detection covers: hardcoded credentials, weak cryptography, SQL injection
+            patterns, unsafe input handling, and insecure configuration values.
           </p>
-
           <ul id="redFlagList" class="red-flags-list">
             <li>No red flags found.</li>
           </ul>
         </div>
+
       </div>
     </main>
 
     <script>
       (function () {
         const raw = sessionStorage.getItem("scanResults");
-
         if (!raw) return;
 
         const data = JSON.parse(raw);
@@ -115,15 +134,32 @@
 
         document.getElementById("pageTitle").textContent = data.filename;
 
-        document.getElementById("totalFunctions").textContent =
-          data.functions.length;
+        document.getElementById("totalFunctions").textContent = data.functions.length;
+        document.getElementById("redFlagCount").textContent = data.red_flag_count;
+        document.getElementById("linesOfCode").textContent = data.loc;
+        document.getElementById("avgTDI").textContent = data.tdi.toFixed(1);
+        document.getElementById("vulnDensity").textContent = data.vulnerability_density.toFixed(2);
 
-        document.getElementById("redFlagCount").textContent =
-          data.red_flag_count;
+        if (data.functions.length > 0) {
+          const avgCC = data.functions.reduce((sum, f) => sum + f.complexity, 0) / data.functions.length;
+          document.getElementById("avgComplexity").textContent = avgCC.toFixed(1);
+        } else {
+          document.getElementById("avgComplexity").textContent = data.file_complexity || "–";
+        }
+
+        const hasCritical = data.critical || data.functions.some(f => f.critical);
+        if (hasCritical) {
+          const criticalFns = data.functions.filter(f => f.critical).map(f => f.function);
+          const banner = document.getElementById("criticalRiskBanner");
+          banner.style.display = "flex";
+          if (criticalFns.length > 0) {
+            document.getElementById("criticalRiskMessage").textContent =
+              `The following function(s) exceed TDI ≥ 50 and require immediate attention: ${criticalFns.join(", ")}.`;
+          }
+        }
 
         const redFlagsList = document.getElementById("redFlagList");
         redFlagsList.innerHTML = "";
-
         if (data.red_flags && data.red_flags.length > 0) {
           for (const flag of data.red_flags) {
             const item = document.createElement("li");
@@ -136,28 +172,34 @@
           redFlagsList.appendChild(item);
         }
 
-        document.getElementById("avgTDI").textContent = data.tdi.toFixed(1);
-
-        document.getElementById("linesOfCode").textContent = data.loc;
-
         const tbody = document.getElementById("resultsBody");
         tbody.innerHTML = "";
 
         for (const fn of data.functions) {
-          const badgeClass =
-            {
-              Low: "badge-low",
-              Medium: "badge-medium",
-              High: "badge-high",
-            }[fn.risk] || "badge-low";
+          const badgeClass = {
+            Low: "badge-low",
+            Medium: "badge-medium",
+            High: "badge-high",
+          }[fn.risk] || "badge-low";
+
+          const isCritical = fn.critical;
 
           const row = document.createElement("tr");
+          if (isCritical) row.classList.add("critical-row");
+
           row.innerHTML = `
-            <td class="col-function">${fn.function}</td>
+            <td class="col-function">
+              ${fn.function}
+              ${isCritical ? '<span class="critical-tag" title="Extremely Complex / High Risk — Immediate Refactoring Recommended">⚠ Critical</span>' : ""}
+            </td>
             <td class="col-loc">${fn.loc}</td>
+            <td class="col-cc">${fn.complexity}</td>
+            <td class="col-vd">${fn.vulnerability_density.toFixed(2)}</td>
             <td class="col-redflags">${fn.red_flag_count}</td>
-            <td class="col-tdi">${fn.tdi}</td>
-            <td class="col-risk"><span class="badge ${badgeClass}">${fn.risk.toUpperCase()}</span></td>
+            <td class="col-tdi"><strong>${fn.tdi.toFixed(1)}</strong></td>
+            <td class="col-risk">
+              <span class="badge ${badgeClass}">${fn.risk.toUpperCase()}</span>
+            </td>
           `;
           tbody.appendChild(row);
         }

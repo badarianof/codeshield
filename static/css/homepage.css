@@ -158,3 +158,36 @@ main {
 .btn-run:hover {
   background-color: #0153a4;
 }
+
+.syntax-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 0 32px 0 32px;
+  padding: 16px 20px;
+  background-color: #fff0f0;
+  border: 1.5px solid #e53935;
+  border-radius: 10px;
+  color: #b71c1c;
+}
+
+.syntax-error-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.syntax-error-banner strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  color: #b71c1c;
+}
+
+.syntax-error-banner p {
+  font-size: 0.875rem;
+  color: #c62828;
+  margin: 0;
+  line-height: 1.5;
+}

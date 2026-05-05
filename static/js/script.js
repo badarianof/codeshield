@@ -42,9 +42,14 @@ if (fileInput) {
 
 function showResults(data) {
   sessionStorage.setItem("scanResults", JSON.stringify(data));
-
+  document.getElementById("syntaxErrorBanner").style.display = "none";
   if (data.error === "syntax_error") {
-    window.location.href = "/scanResult";
+    const banner = document.getElementById("syntaxErrorBanner");
+    const msg = document.getElementById("syntaxErrorMessage");
+    if (banner && msg) {
+      msg.textContent = data.message || "This file contains a syntax error and could not be scanned.";
+      banner.style.display = "flex";
+    }
     return;
   }
 

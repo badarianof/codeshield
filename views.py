@@ -12,6 +12,9 @@ def scan():
     data = request.get_json()
     source_code = data["source"]
     filename = data["filename"]
+    
+    if len(source_code) > 100_000:
+        return jsonify({"error": "file_too_large", "message": "File exceeds maximum size of 100KB."})
 
     try:
         scan_data = scan_code(source_code)

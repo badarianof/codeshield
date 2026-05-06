@@ -41,7 +41,6 @@ codeshield/
 ├── app.py              # entry point
 ├── views.py            # routes (/scan, /scanResult, /scanHistory)
 ├── tdiScanner.py       # scanner engine
-├── tests.py            # unit tests
 ├── static/
 │   ├── css/
 │   ├── js/

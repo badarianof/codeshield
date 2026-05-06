@@ -14,8 +14,6 @@ The tool scans `.py` files and combines cyclomatic complexity with security red 
   - Hardcoded credentials (passwords, tokens, API keys)
   - Weak cryptographic algorithms (`hashlib.md5`, `hashlib.sha1`)
   - SQL injection patterns (string concatenation in `execute()`)
-  - Unsafe input handling (`eval()`, `exec()`)
-  - Insecure configuration values (`DEBUG=True`, `verify=False`)
   - Commented-out code blocks (3+ consecutive lines)
 - Calculates vulnerability density (red flags per 1,000 LoC)
 - Combines everything into a TDI score with a Low / Medium / High risk label

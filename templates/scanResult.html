@@ -27,11 +27,7 @@
         <h1 id="pageTitle">Scan Results</h1>
       </div>
 
-      <div
-        id="syntaxErrorBanner"
-        class="syntax-error-banner"
-        style="display: none"
-      >
+      <div id="syntaxErrorBanner" class="syntax-error-banner" style="display: none">
         <span class="syntax-error-icon">⚠️</span>
         <div>
           <strong>Invalid Python Syntax</strong>
@@ -40,6 +36,7 @@
           </p>
         </div>
       </div>
+
       <div id="criticalRiskBanner" class="critical-risk-banner" style="display: none;">
         <span class="critical-risk-icon">🚨</span>
         <div>
@@ -63,14 +60,6 @@
             <span class="card-label">Red Flags</span>
           </div>
           <div class="summary-card">
-            <span class="big-number" id="avgComplexity">–</span>
-            <span class="card-label">Avg Complexity</span>
-          </div>
-          <div class="summary-card">
-            <span class="big-number" id="vulnDensity">–</span>
-            <span class="card-label">Vuln Density (/1k LoC)</span>
-          </div>
-          <div class="summary-card">
             <span class="big-number" id="avgTDI">–</span>
             <span class="card-label">File TDI</span>
           </div>
@@ -81,7 +70,7 @@
         </div>
 
         <div class="tdi-formula-box">
-          <span class="formula-label">TDI formula (Section 3):</span>
+          <span class="formula-label">TDI formula:</span>
           <code>TDI = (Complexity × 0.5) + (Vulnerability Density × 0.5)</code>
           <span class="threshold-note">High-risk threshold: TDI ≥ 50</span>
         </div>
@@ -133,27 +122,16 @@
         if (data.error === "syntax_error") {
           document.getElementById("syntaxErrorBanner").style.display = "flex";
           document.getElementById("syntaxErrorMessage").textContent =
-            data.message ||
-            "This file contains a syntax error and could not be scanned.";
-          document.getElementById("pageTitle").textContent =
-            data.filename || "Scan Results";
+            data.message || "This file contains a syntax error and could not be scanned.";
+          document.getElementById("pageTitle").textContent = data.filename || "Scan Results";
           return;
         }
 
         document.getElementById("pageTitle").textContent = data.filename;
-
         document.getElementById("totalFunctions").textContent = data.functions.length;
         document.getElementById("redFlagCount").textContent = data.red_flag_count;
         document.getElementById("linesOfCode").textContent = data.loc;
         document.getElementById("avgTDI").textContent = data.tdi.toFixed(1);
-        document.getElementById("vulnDensity").textContent = data.vulnerability_density.toFixed(2);
-
-        if (data.functions.length > 0) {
-          const avgCC = data.functions.reduce((sum, f) => sum + f.complexity, 0) / data.functions.length;
-          document.getElementById("avgComplexity").textContent = avgCC.toFixed(1);
-        } else {
-          document.getElementById("avgComplexity").textContent = data.file_complexity || "–";
-        }
 
         const hasCritical = data.critical || data.functions.some(f => f.critical);
         if (hasCritical) {
@@ -162,7 +140,7 @@
           banner.style.display = "flex";
           if (criticalFns.length > 0) {
             document.getElementById("criticalRiskMessage").textContent =
-              `The following function(s) exceed TDI ≥ 50 and require immediate attention: ${criticalFns.join(", ")}.`;
+              `The following function(s) exceed TDI >= 50 and require immediate attention: ${criticalFns.join(", ")}.`;
           }
         }
 
@@ -191,14 +169,13 @@
           }[fn.risk] || "badge-low";
 
           const isCritical = fn.critical;
-
           const row = document.createElement("tr");
           if (isCritical) row.classList.add("critical-row");
 
           row.innerHTML = `
             <td class="col-function">
               ${fn.function}
-              ${isCritical ? '<span class="critical-tag" title="Extremely Complex / High Risk — Immediate Refactoring Recommended">⚠ Critical</span>' : ""}
+              ${isCritical ? '<span class="critical-tag" title="Extremely Complex / High Risk — Immediate Refactoring Recommended">&#9888; Critical</span>' : ""}
             </td>
             <td class="col-loc">${fn.loc}</td>
             <td class="col-cc">${fn.complexity}</td>
